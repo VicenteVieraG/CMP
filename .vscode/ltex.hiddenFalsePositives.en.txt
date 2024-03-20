@@ -1,0 +1,1 @@
+{"rule":"PASSIVE_VOICE","sentence":"^\\QIf any library is required, it should follow the same principle of simplicity and 0 CMake knoledge.\\E$"}
