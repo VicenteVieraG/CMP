@@ -1,40 +1,33 @@
 #include <iostream>
-#include <cstring>
+#include <string>
 #include <windows.h>
 
 #include <config.hpp>
 
-void createDir(const char* dirName);
+bool createDir(const std::string dirName);
 
 int main(int argc, char** argv){
     std::cout<<project_name<<std::endl;
     std::cout<<project_version<<std::endl;
 
+    createDir("TEST");
+
     return 0;
 }
 
-void createDir(const char* dirName){
-    TCHAR pwd[MAX_PATH];
-    if(!GetCurrentDirectory(MAX_PATH, pwd)){
-        std::cerr<<"Error Getting Current Directory: "<<pwd<<'\\'<<std::endl;
-
-        return;
+bool createDir(const std::string dirName){
+    TCHAR cwd[MAX_PATH];
+    if(!GetCurrentDirectory(MAX_PATH, cwd)){
+        std::cerr<<"-- Error Getting Current Directory"<<std::endl;
+        return false;
     }
 
-    size_t dirLen = sizeof(pwd) + sizeof(dirName) + 2;
+    const std::string path = std::string(cwd) + "\\" + dirName;
 
-    char* path = new char[dirLen];
-    path[0] = '\0';
-
-    strcat(path, pwd);
-    strcat(path, "\\");
-    strcat(path, dirName);
-
-    if(!CreateDirectory(path, NULL)){
-        std::cerr<<"Error Creating Directory: "<<path<<std::endl;
-
-        return;
+    if(!CreateDirectory(path.c_str(), NULL)){
+        std::cerr<<"-- Error Creating Directory: "<<path<<std::endl;
+        return false;
     }
 
-    delete path;
+    return true;
 }
